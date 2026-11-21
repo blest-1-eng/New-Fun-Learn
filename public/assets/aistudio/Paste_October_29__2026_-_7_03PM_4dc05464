@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kids Play V5 Visual Fruit Math</title>
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap');
+
+:root{
+    --blue:#4f8cff;
+    --purple:#765cff;
+    --pink:#ff6fae;
+    --green:#35c98a;
+    --red:#ff6673;
+    --yellow:#ffd85a;
+    --ink:#253653;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    margin:0;
+}
+
+body{
+    font-family:'Quicksand',sans-serif;
+    background:
+        radial-gradient(circle at 8% 8%,#fff 0 5%,transparent 18%),
+        radial-gradient(circle at 92% 12%,#fff7b8 0 4%,transparent 17%),
+        radial-gradient(circle at 88% 90%,#d9f7ff 0 6%,transparent 20%),
+        linear-gradient(
+            145deg,
+            #bcecff 0%,
+            #d9d2ff 52%,
+            #ffd7ed 100%
+        );
+    color:var(--ink);
+    overflow:hidden;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:manipulation;
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.app-title{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+}
+
+.kids-card{
+    background:#fff;
+    border:3px solid #e9eef8;
+    border-radius:28px;
+    box-shadow:0 10px 0 #dce5f2;
+}
+
+.answer-option{
+    min-height:80px;
+    border:3px solid #e7edfa;
+    border-radius:24px;
+    background:linear-gradient(180deg,#fff,#f8fbff);
+    box-shadow:0 7px 0 #dbe4f3;
+    font-size:1.5rem;
+    font-weight:900;
+    transition:.18s;
+}
+
+.answer-option:active{
+    transform:translateY(5px);
+    box-shadow:0 2px 0 #dbe4f3;
+}
+
+.answer-correct{
+    border-color:#28bd79!important;
+    background:#dcfce9!important;
+    box-shadow:0 6px 0 #20a56a!important;
+}
+
+.answer-wrong{
+    border-color:#ff5968!important;
+    background:#ffe0e4!important;
+    box-shadow:0 6px 0 #d94352!important;
+    animation:shake .28s ease;
+}
+
+@keyframes shake{
+    25%{transform:translateX(-7px)}
+    50%{transform:translateX(7px)}
+    75%{transform:translateX(-4px)}
+}
+
+.bounce{
+    animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+}
+
+.pop{
+    animation:pop .25s ease;
+}
+
+@keyframes pop{
+    0%{
+        transform:scale(.8);
+        opacity:.5;
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.progress-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#dbe4f3;
+}
+
+.progress-dot.active{
+    width:12px;
+    height:12px;
+    background:var(--blue);
+}
+
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:999;
+}
+
+.mode-card{
+    min-height:85px;
+    border:4px solid white;
+    border-radius:22px;
+    background:white;
+    color:#26364f;
+    box-shadow:0 7px 0 #263f7a20;
+    transition:.2s;
+    position:relative;
+    overflow:hidden;
+}
+
+.mode-card:active{
+    transform:translateY(4px);
+    box-shadow:0 3px 0 #263f7a20;
+}
+
+.age-button{
+    height:54px;
+    border:3px solid #eaf0ff;
+    background:#f8faff;
+    color:#334155;
+    border-radius:18px;
+    font-size:15px;
+    font-weight:900;
+}
+
+.age-button.selected{
+    background:linear-gradient(
+        145deg,
+        #4f8cff,
+        #765cff
+    );
+    color:white;
+    border-color:white;
+    box-shadow:0 6px 0 #365fc0;
+}
+
+.nav-button{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    border:4px solid #e6eefb;
+    background:white;
+    color:#4f8cff;
+    font-size:25px;
+    box-shadow:0 7px 15px #29456b18;
+}
+
+.nav-button:active{
+    transform:scale(.9);
+}
+
+.learning-number{
+    font-family:'Fredoka',sans-serif;
+    font-size:7rem;
+    line-height:1;
+    font-weight:700;
+}
+
+.learning-letter{
+    font-family:'Fredoka',sans-serif;
+    font-size:5rem;
+    line-height:1.2;
+    font-weight:700;
+}
+
+.star-grid{
+    display:grid;
+    gap:7px;
+    justify-items:center;
+    align-items:center;
+    width:100%;
+}
+
+.math-box{
+    background:white;
+    border:3px solid #edf1f8;
+    border-radius:24px;
+    padding:15px;
+    min-width:100px;
+    min-height:95px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+@media(max-width:420px){
+    .learning-number{
+        font-size:6rem;
+    }
+    .learning-letter{
+        font-size:4rem;
+    }
+    .answer-option{
+        min-height:70px;
+        font-size:1.3rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Age Selection Screen -->
+<section
+    id="age-screen"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
+    style="
+        background:
+        linear-gradient(
+            145deg,
+            #5d9cff,
+            #765fe6 55%,
+            #f06ca8
+        );
+    "
+>
+
+<div
+    class="w-full max-w-md bg-white rounded-[38px] p-6 shadow-2xl my-auto"
+>
+
+<div class="text-center">
+
+<div class="text-5xl mb-1">
+    🧸
+</div>
+
+<h1
+    class="app-title text-3xl"
+    style="color:#38528a"
+>
+    Kids Play
+</h1>
+
+<p class="text-gray-500 text-sm mt-1">
+    Let's start your learning adventure!
+</p>
+
+</div>
+
+<div class="mt-5">
+
+<p class="font-bold text-gray-600 text-sm mb-2">
+    Select Your Class:
+</p>
+
+<div
+    id="age-grid"
+    class="grid grid-cols-2 gap-2"
+>
+
+<button class="age-button" onclick="selectAge(3, event)">Nursery</button>
+<button class="age-button" onclick="selectAge(4, event)">LKG</button>
+<button class="age-button" onclick="selectAge(5, event)">UKG</button>
+<button class="age-button" onclick="selectAge(6, event)">1st Class</button>
+<button class="age-button" onclick="selectAge(7, event)">2nd Class</button>
+<button class="age-button" onclick="selectAge(8, event)">3rd Class</button>
+<button class="age-button" onclick="selectAge(9, event)">4th Class</button>
+<button class="age-button" onclick="selectAge(10, event)">5th Class</button>
+
+</div>
+
+</div>
+
+<button
+    id="continue-button"
+    onclick="continueFromAge()"
+    disabled
+    class="w-full mt-5 py-3.5 rounded-2xl text-white font-black text-lg opacity-50 transition-opacity"
+    style="
+        background:linear-gradient(
+            145deg,
+            #ff6fae,
+            #ff8a64
+        );
+        box-shadow:0 6px 0 #d65372;
+    "
+>
+    Start Learning 🚀
+</button>
+
+</div>
+
+</section>
+
+
+<!-- Main Menu Screen -->
+<section
+    id="menu-screen"
+    class="hidden fixed inset-0 z-40 flex flex-col items-center justify-center p-4 text-white overflow-y-auto"
+    style="
+        background:
+        linear-gradient(
+            145deg,
+            #5d9cff,
+            #765fe6 55%,
+            #f06ca8
+        );
+    "
+>
+
+<div class="w-full max-w-lg my-auto">
+
+<div class="text-center mb-3">
+<div class="text-3xl">🌈</div>
+<h1 class="app-title text-2xl">Kids Play</h1>
+<p id="profile-text" class="text-xs mt-0.5 opacity-90">Learning Adventure</p>
+</div>
+
+<!-- Class Change Option inside Menu -->
+<div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl mb-3 flex items-center justify-between">
+    <span class="text-xs font-bold">Change Class:</span>
+    <select
+        id="menu-age-select"
+        onchange="changeAgeFromMenu(this.value)"
+        class="bg-white text-gray-800 p-1.5 px-3 rounded-xl border-none outline-none text-xs font-bold"
+    >
+        <option value="3">Nursery</option>
+        <option value="4">LKG</option>
+        <option value="5">UKG</option>
+        <option value="6">1st Class</option>
+        <option value="7">2nd Class</option>
+        <option value="8">3rd Class</option>
+        <option value="9">4th Class</option>
+        <option value="10">5th Class</option>
+    </select>
+</div>
+
+<div id="sections-container" class="max-h-[55vh] overflow-y-auto pr-1 space-y-3">
+</div>
+
+<button
+    onclick="openParentDashboard()"
+    class="w-full mt-3 bg-white text-gray-700 rounded-2xl py-3 font-black shadow-lg text-sm"
+>
+    👨‍👩‍👧 Parent Dashboard
+</button>
+
+</div>
+
+</section>
+
+
+<!-- Learning & Game Screen -->
+<section
+    id="app-screen"
+    class="hidden fixed inset-0 z-30 flex items-center justify-center p-4"
+>
+
+<div
+    id="app-card"
+    class="relative w-full max-w-lg h-full max-h-[850px] rounded-[34px] border-[6px] border-white shadow-2xl overflow-hidden flex flex-col"
+    style="
+        background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f7faff
+        );
+    "
+>
+
+<div
+    class="absolute top-0 left-0 right-0 h-16 px-5 flex items-center justify-between z-10 bg-white/80 backdrop-blur-md"
+>
+
+<button
+    onclick="backToMenu()"
+    class="w-10 h-10 rounded-xl bg-white shadow-md border border-gray-100 text-lg flex items-center justify-center"
+>
+    🏠
+</button>
+
+<div
+    id="app-title"
+    class="font-black text-gray-600 text-sm md:text-base"
+>
+    Learning
+</div>
+
+<div
+    id="score-badge"
+    class="hidden bg-yellow-400 text-white px-3 py-1.5 rounded-xl font-black text-sm"
+>
+    ⭐ <span id="score">0</span>
+</div>
+
+</div>
+
+
+<div
+    id="progress"
+    class="absolute top-[64px] left-0 right-0 flex justify-center gap-2 z-10 py-1"
+>
+</div>
+
+
+<div
+    id="content"
+    class="flex-1 flex items-center justify-center px-5 pt-16 pb-16 overflow-y-auto w-full"
+>
+</div>
+
+
+<div
+    id="navigation"
+    class="hidden absolute bottom-3 left-0 right-0 px-6 flex justify-between z-10 pointer-events-none"
+>
+
+<button
+    class="nav-button pointer-events-auto flex items-center justify-center"
+    onclick="previousLearning()"
+>
+    ←
+</button>
+
+<button
+    class="nav-button pointer-events-auto flex items-center justify-center"
+    onclick="nextLearning()"
+>
+    →
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- Parent Dashboard Screen -->
+<section
+    id="parent-screen"
+    class="hidden fixed inset-0 z-[80] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-5"
+>
+
+<div
+    class="bg-white w-full max-w-lg rounded-[32px] p-6 shadow-2xl"
+>
+
+<div class="flex justify-between items-center mb-2">
+
+<h2 class="text-xl font-black">
+    📊 Parent Dashboard
+</h2>
+
+<button
+    onclick="closeParentDashboard()"
+    class="text-xl font-bold w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"
+>
+    ✕
+</button>
+
+</div>
+
+<div
+    id="history"
+    class="mt-3 space-y-3 max-h-[60vh] overflow-y-auto pr-1"
+>
+</div>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* =========================================================
+   DATA & SAFE STORAGE FALLBACK
+========================================================= */
+
+const memoryFallback = {};
+const safeStorage = {
+    setItem: function(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch (e) {
+            memoryFallback[key] = value;
+        }
+    },
+    getItem: function(key) {
+        try {
+            return localStorage.getItem(key) || memoryFallback[key] || null;
+        } catch (e) {
+            return memoryFallback[key] || null;
+        }
+    }
+};
+
+const alphabet = [
+{l:"A",w:"Apple",e:"🍎",c:"#ef4444"},
+{l:"B",w:"Ball",e:"⚽",c:"#3b82f6"},
+{l:"C",w:"Cat",e:"🐱",c:"#f59e0b"},
+{l:"D",w:"Dog",e:"🐶",c:"#10b981"},
+{l:"E",w:"Elephant",e:"🐘",c:"#8b5cf6"},
+{l:"F",w:"Fish",e:"🐟",c:"#06b6d4"},
+{l:"G",w:"Grape",e:"🍇",c:"#84cc16"},
+{l:"H",w:"Horse",e:"🐎",c:"#d946ef"},
+{l:"I",w:"Ice Cream",e:"🍦",c:"#f43f5e"},
+{l:"J",w:"Juice",e:"🧃",c:"#fb923c"},
+{l:"K",w:"Kangaroo",e:"🦘",c:"#4ade80"},
+{l:"L",w:"Lion",e:"🦁",c:"#fbbf24"},
+{l:"M",w:"Monkey",e:"🐒",c:"#a855f7"},
+{l:"N",w:"Nest",e:"🪺",c:"#14b8a6"},
+{l:"O",w:"Orange",e:"🍊",c:"#f97316"},
+{l:"P",w:"Panda",e:"🐼",c:"#475569"},
+{l:"Q",w:"Queen",e:"👸",c:"#ec4899"},
+{l:"R",w:"Rabbit",e:"🐰",c:"#6366f1"},
+{l:"S",w:"Sun",e:"☀️",c:"#eab308"},
+{l:"T",w:"Tiger",e:"🐯",c:"#f97316"},
+{l:"U",w:"Umbrella",e:"⛱️",c:"#0ea5e9"},
+{l:"V",w:"Violin",e:"🎻",c:"#6366f1"},
+{l:"W",w:"Watermelon",e:"🍉",c:"#22c55e"},
+{l:"X",w:"Xylophone",e:"🎹",c:"#f43f5e"},
+{l:"Y",w:"Yo-Yo",e:"🪀",c:"#8b5cf6"},
+{l:"Z",w:"Zebra",e:"🦓",c:"#334155"}
+];
+
+const hindiVarnamala = [
+{l:"क", w:"क से कबूतर", e:"🕊️", c:"#ef4444"},
+{l:"ख", w:"ख से खरगोश", e:"🐇", c:"#f59e0b"},
+{l:"ग", w:"ग से गमला", e:"🪴", c:"#10b981"},
+{l:"घ", w:"घ से घर", e:"🏠", c:"#3b82f6"},
+{l:"ङ", w:"ङ से खाली", e:"✨", c:"#8b5cf6"},
+{l:"च", w:"च से चम्मच", e:"🥄", c:"#ec4899"},
+{l:"छ", w:"छ से छाता", e:"🌂", c:"#06b6d4"},
+{l:"ज", w:"ज से जहाज", e:"🚢", c:"#84cc16"},
+{l:"झ", w:"झ से झंडा", e:"🚩", c:"#f43f5e"},
+{l:"ञ", w:"ञ से खाली", e:"✨", c:"#fb923c"},
+{l:"ट", w:"ट से टमाटर", e:"🍅", c:"#ef4444"},
+{l:"ठ", w:"ठ से ठठेरा", e:"🍲", c:"#3b82f6"},
+{l:"ड", w:"ड से डमरू", e:"🥁", c:"#f59e0b"},
+{l:"ढ", w:"ढ से ढक्कन", e:"🟢", c:"#10b981"},
+{l:"ण", w:"ण से खाली", e:"✨", c:"#8b5cf6"},
+{l:"त", w:"त से तरबूज", e:"🍉", c:"#22c55e"},
+{l:"थ", w:"थ से थर्मास", e:"🍼", c:"#0ea5e9"},
+{l:"द", w:"द से दवात", e:"✒️", c:"#6366f1"},
+{l:"ध", w:"ध से धनुष", e:"🏹", c:"#d946ef"},
+{l:"न", w:"न से नल", e:"🚰", c:"#f97316"},
+{l:"प", w:"प से पतंग", e:"🪁", c:"#eab308"},
+{l:"फ", w:"फ से फल", e:"🍎", c:"#ef4444"},
+{l:"ब", w:"ब से बतक", e:"🦆", c:"#3b82f6"},
+{l:"भ", w:"भ से भालू", e:"🐻", c:"#a855f7"},
+{l:"म", w:"म से मछली", e:"🐟", c:"#06b6d4"},
+{l:"य", w:"य से यज्ञ", e:"🔥", c:"#f43f5e"},
+{l:"र", w:"र से रथ", e:"🛒", c:"#14b8a6"},
+{l:"ल", w:"ल से लट्टू", e:"🎡", c:"#84cc16"},
+{l:"व", w:"व से वॉक", e:"🚶", c:"#f97316"},
+{l:"श", w:"श से शलजम", e:"🟣", c:"#8b5cf6"},
+{l:"ष", w:"ष से षटकोण", e:"💠", c:"#3b82f6"},
+{l:"स", w:"स से सपेरा", e:"🐍", c:"#10b981"},
+{l:"ह", w:"ह से हलवाई", e:"🍲", c:"#f59e0b"},
+{l:"क्ष", w:"क्ष से क्षत्रिय", e:"🛡️", c:"#ef4444"},
+{l:"त्र", w:"त्र से त्रिशूल", e:"🔱", c:"#ec4899"},
+{l:"ज्ञ", w:"ज्ञ से ज्ञानी", e:"📖", c:"#6366f1"}
+];
+
+const hindiMatras = [
+{l:"ा", w:"आ की मात्रा (जैसे क + ा = का)", e:"🍎", c:"#ef4444"},
+{l:"ि", w:"इ की मात्रा (जैसे क + ि = कि)", e:"🎈", c:"#3b82f6"},
+{l:"ी", w:"ई की मात्रा (जैसे क + ी = की)", e:"⭐", c:"#10b981"},
+{l:"ु", w:"उ की मात्रा (जैसे क + ु = कु)", e:"🧸", c:"#f59e0b"},
+{l:"ू", w:"ऊ की मात्रा (जैसे क + ू = कू)", e:"🍇", c:"#8b5cf6"},
+{l:"े", w:"ए की मात्रा (जैसे क + े = के)", e:"🍦", c:"#06b6d4"},
+{l:"ै", w:"ऐ की मात्रा (जैसे क + ै = कै)", e:"⚽", c:"#f43f5e"},
+{l:"ो", w:"ओ की मात्रा (जैसे क + ो = को)", e:"☀️", c:"#eab308"},
+{l:"ौ", w:"औ की मात्रा (जैसे क + ौ = कौ)", e:"🌺", c:"#14b8a6"},
+{l:"ं", w:"अं की बिंदी (जैसे क + ं = कं)", e:"🚀", c:"#f97316"}
+];
+
+const hindiWordReadingList = [
+{l:"कमल", w:"क + म + ल = कमल (Kamal)", e:"🌸", c:"#ef4444"},
+{l:"कलम", w:"क + ल + म = कलम (Kalam)", e:"🖊️", c:"#3b82f6"},
+{l:"मटर", w:"म + ट + र = मटर (Matar)", e:"🟢", c:"#10b981"},
+{l:"घर", w:"घ + र = घर (Ghar)", e:"🏠", c:"#f59e0b"},
+{l:"जल", w:"ज + ल = जल (Jal)", e:"💧", c:"#06b6d4"},
+{l:"फल", w:"फ + ल = फल (Fal)", e:"🍎", c:"#8b5cf6"},
+{l:"रथ", w:"र + थ = रथ (Rath)", e:"🛒", c:"#ec4899"},
+{l:"नयन", w:"न + य + न = नयन (Nayan)", e:"👀", c:"#eab308"}
+];
+
+// 2 से 5 तक के पूरे पहाड़े (4th Class)
+const tables2to5List = [];
+for(let t=2; t<=5; t++){
+    let fullTableStr = "";
+    for(let i=1; i<=10; i++){
+        fullTableStr += `${t} × ${i} = ${t * i}<br>`;
+    }
+    tables2to5List.push({
+        tableNum: t,
+        l: `${t} का पहाड़ा (Table of ${t})`,
+        contentStr: fullTableStr,
+        e: t === 2 ? "🦆" : t === 3 ? "⭐" : t === 4 ? "🎈" : "🍎",
+        c: t === 2 ? "#3b82f6" : t === 3 ? "#10b981" : t === 4 ? "#f59e0b" : "#ef4444"
+    });
+}
+
+const tableQuizList = [];
+for(let t=2; t<=5; t++){
+    for(let i=1; i<=10; i++){
+        tableQuizList.push({
+            isTableTest: true,
+            a: t,
+            b: i,
+            target: t * i,
+            options: [t*i, (t*i)+1 > 50 ? t*i-2 : (t*i)+1, (t*i)-1 < 0 ? t*i+3 : (t*i)-1].sort(()=>Math.random()-.5)
+        });
+    }
+}
+
+// 2 से 20 तक के पूरे पहाड़े (5th Class)
+const tables2to20List = [];
+for(let t=2; t<=20; t++){
+    let fullTableStr = "";
+    for(let i=1; i<=10; i++){
+        fullTableStr += `${t} × ${i} = ${t * i}<br>`;
+    }
+    tables2to20List.push({
+        tableNum: t,
+        l: `${t} का पहाड़ा (Table of ${t})`,
+        contentStr: fullTableStr,
+        e: "⭐",
+        c: "#765cff"
+    });
+}
+
+const table2to20QuizList = [];
+for(let t=2; t<=20; t++){
+    for(let i=1; i<=10; i++){
+        table2to20QuizList.push({
+            isTableTest: true,
+            a: t,
+            b: i,
+            target: t * i,
+            options: [t*i, (t*i)+2 > 250 ? t*i-3 : (t*i)+2, (t*i)-2 < 0 ? t*i+4 : (t*i)-2].sort(()=>Math.random()-.5)
+        });
+    }
+}
+
+// बेहतर और स्पष्ट विजुअल डिवीजन (भाग) सीखने का सेक्शन (5th Class)
+const divisionLearningList = [
+{total: 6, groups: 2, symbol: "🍬", title: "कुल 6 टॉफियां थीं। उन्हें 2 बच्चों में बराबर बांटा गया, तो हर बच्चे को 3 टॉफियां मिलीं! (6 ÷ 2 = 3)"},
+{total: 8, groups: 4, symbol: "⭐", title: "कुल 8 तारे थे। उन्हें 4 आसमानों में बराबर बांटा गया, तो हर आसमान में 2 तारे आए! (8 ÷ 4 = 2)"},
+{total: 10, groups: 2, symbol: "🍎", title: "कुल 10 सेब थे। उन्हें 2 टोकरियों में बराबर रखा गया, तो हर टोकरी में 5 सेब आए! (10 ÷ 2 = 5)"},
+{total: 12, groups: 3, symbol: "⚽", title: "कुल 12 गेंदें थीं। उन्हें 3 थैलों में बराबर बांटा गया, तो हर थैले में 4 गेंदें आईं! (12 ÷ 3 = 4)"}
+];
+
+const divisionQuizList = [];
+for(let i=0; i<10; i++){
+    const b = Math.floor(Math.random()*4) + 2; 
+    const ans = Math.floor(Math.random()*5) + 1;
+    const a = b * ans;
+    divisionQuizList.push({
+        isDivisionTest: true,
+        a: a,
+        b: b,
+        target: ans,
+        options: [ans, ans > 1 ? ans - 1 : ans + 2, ans + 1].sort(()=>Math.random()-.5)
+    });
+}
+
+// हिंदी वाक्य पढ़ना और समझना (Learning Zone के लिए)
+const advancedHindiSentences = [
+{sentence: "राम एक अच्छा ___ है।", hint: "(यहाँ सही शब्द 'लड़का' आएगा)", target: "लड़का", meaning: "अर्थ: राम एक अच्छा बालक है।", e: "👦", c: "#3b82f6"},
+{sentence: "सूरज पूर्व दिशा से ___ है।", hint: "(यहाँ सही शब्द 'उगता' आएगा)", target: "उगता", meaning: "अर्थ: सूरज सुबह पूर्व दिशा से निकलता है।", e: "🌅", c: "#f59e0b"},
+{sentence: "गाय हमें मीठा ___ देती है।", hint: "(यहाँ सही शब्द 'दूध' आएगा)", target: "दूध", meaning: "अर्थ: गाय हमें पीने के लिए मीठा दूध देती है।", e: "🐄", c: "#10b981"},
+{sentence: "हमें रोज स्कूल ___ चाहिए।", hint: "(यहाँ सही शब्द 'जाना' आएगा)", target: "जाना", meaning: "अर्थ: हमें रोजाना पढ़ाई करने स्कूल जाना चाहिए।", e: "🏫", c: "#8b5cf6"},
+{sentence: "पक्षी आसमान में ऊंचे ___ हैं।", hint: "(यहाँ सही शब्द 'उड़ते' आएगा)", target: "उड़ते", meaning: "अर्थ: चिड़ियाँ आसमान में बहुत ऊंचे उड़ती हैं।", e: "🦅", c: "#06b6d4"}
+];
+
+// हिंदी वाक्य टेस्ट (Test Zone के लिए सही रैंडम विकल्प वाले सवाल)
+const advancedHindiTestPool = [
+{sentence: "राम एक अच्छा ___ है।", target: "लड़का", emoji: "👦", options: ["लड़का", "किताब", "पेड़"]},
+{sentence: "सूरज पूर्व दिशा से ___ है।", target: "उगता", emoji: "🌅", options: ["उगता", "दौड़ता", "सोता"]},
+{sentence: "गाय हमें मीठा ___ देती है।", target: "दूध", emoji: "🐄", options: ["दूध", "पानी", "पत्थर"]},
+{sentence: "हमें रोज स्कूल ___ चाहिए।", target: "जाना", emoji: "🏫", options: ["जाना", "रोना", "सोना"]},
+{sentence: "पक्षी आसमान में ऊंचे ___ हैं।", target: "उड़ते", emoji: "🦅", options: ["उड़ते", "चलते", "बैठते"]}
+];
+
+const visualSubtractionLearning = [
+{a: 5, b: 2, symbol: "🍎", title: "5 एप्पल्स में से 2 एप्पल्स खा लिए = 3 एप्पल्स बचे!"},
+{a: 4, b: 1, symbol: "⭐", title: "4 स्टार्स में से 1 स्टार चला गया = 3 स्टार्स बचे!"},
+{a: 6, b: 3, symbol: "🎈", title: "6 गुब्बारों में से 3 गुब्बारे फूट गए = 3 गुब्बारे बचे!"},
+{a: 5, b: 2, symbol: "⚽", title: "5 गेंदों में से 2 गेंदें खो गईं = 3 गेंदें बचीं!"}
+];
+
+const visualMultiplicationLearning = [
+{a: 3, b: 2, symbol: "🍎", title: "3 बक्से और हर बक्से में 2 एप्पल्स = कुल 6 एप्पल्स (3 × 2 = 6)"},
+{a: 4, b: 2, symbol: "⭐", title: "4 समूह और हर समूह में 2 स्टार्स = कुल 8 स्टार्स (4 × 2 = 8)"},
+{a: 2, b: 5, symbol: "🎈", title: "2 समूह और हर समूह में 5 गुब्बारे = कुल 10 गुब्बारे (2 × 5 = 10)"}
+];
+
+const numbers = [
+{l:"1",w:"One",e:"⭐",n:1,c:"#ef4444"},
+{l:"2",w:"Two",e:"⭐",n:2,c:"#3b82f6"},
+{l:"3",w:"Three",e:"⭐",n:3,c:"#10b981"},
+{l:"4",w:"Four",e:"⭐",n:4,c:"#f59e0b"},
+{l:"5",w:"Five",e:"⭐",n:5,c:"#8b5cf6"},
+{l:"6",w:"Six",e:"⭐",n:6,c:"#06b6d4"},
+{l:"7",w:"Seven",e:"⭐",n:7,c:"#f43f5e"},
+{l:"8",w:"Eight",e:"⭐",n:8,c:"#14b8a6"},
+{l:"9",w:"Nine",e:"⭐",n:9,c:"#f97316"},
+{l:"10",w:"Ten",e:"⭐",n:10,c:"#334155"},
+{l:"11",w:"Eleven",e:"⭐",n:11,c:"#ef4444"},
+{l:"12",w:"Twelve",e:"⭐",n:12,c:"#3b82f6"},
+{l:"13",w:"Thirteen",e:"⭐",n:13,c:"#10b981"},
+{l:"14",w:"Fourteen",e:"⭐",n:14,c:"#f59e0b"},
+{l:"15",w:"Fifteen",e:"⭐",n:15,c:"#8b5cf6"},
+{l:"16",w:"Sixteen",e:"⭐",n:16,c:"#06b6d4"},
+{l:"17",w:"Seventeen",e:"⭐",n:17,c:"#f43f5e"},
+{l:"18",w:"Eighteen",e:"⭐",n:18,c:"#14b8a6"},
+{l:"19",w:"Nineteen",e:"⭐",n:19,c:"#f97316"},
+{l:"20",w:"Twenty",e:"⭐",n:20,c:"#334155"}
+];
+
+function numberToWord(num) {
+    const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+    const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty"];
+    if (num <= 19) return ones[num];
+    if (num % 10 === 0) return tens[Math.floor(num / 10)];
+    return tens[Math.floor(num / 10)] + " " + ones[num % 10];
+}
+
+const funEmojis = ["🍎", "🐱", "🐶", "⚽", "🚗", "🌟", "🍌", "🎈", "🐸", "🚀", "🍦", "🍇", "🧸", "🐼", "🍉"];
+
+const numbers50 = Array.from({length: 50}, (_, i) => ({
+    l: numberToWord(i + 1),
+    w: `Number ${i + 1} (${numberToWord(i + 1)})`,
+    e: funEmojis[i % funEmojis.length],
+    n: i + 1,
+    c: "#4f8cff"
+}));
+
+const phonicWordsList = [
+    {l: "C + A + T", w: "C - A - T spells CAT 🐱", e: "🐱", c: "#f59e0b"},
+    {l: "D + O + G", w: "D - O - G spells DOG 🐶", e: "🐶", c: "#10b981"},
+    {l: "S + U + N", w: "S - U - N spells SUN ☀️", e: "☀️", c: "#eab308"},
+    {l: "B + A + T", w: "B - A - T spells BAT 🏏", e: "🏏", c: "#3b82f6"},
+    {l: "P + I + G", w: "P - I - G spells PIG 🐷", e: "🐷", c: "#ec4899"},
+    {l: "H + E + N", w: "H - E - N spells HEN 🐔", e: "🐔", c: "#8b5cf6"},
+    {l: "F + I + S + H", w: "F - I - S - H spells FISH 🐟", e: "🐟", c: "#06b6d4"},
+    {l: "B + A + L + L", w: "B - A - L - L spells BALL ⚽", e: "⚽", c: "#ef4444"}
+];
+
+const englishWordsList = [
+{l:"CAT",w:"Cat - A cute pet",e:"🐱",c:"#f59e0b"},
+{l:"DOG",w:"Dog - A loyal animal",e:"🐶",c:"#10b981"},
+{l:"SUN",w:"Sun - Shines bright",e:"☀️",c:"#eab308"},
+{l:"BOOK",w:"Book - For reading",e:"📖",c:"#3b82f6"},
+{l:"TREE",w:"Tree - Gives shade",e:"🌳",c:"#22c55e"}
+];
+
+const sentencesList = [
+{l:"I love reading story books.", w:"I love reading story books.\n(मुझे कहानी की किताबें पढ़ना पसंद है।)", e:"📚", c: "#3b82f6"},
+{l:"The cat drinks sweet milk.", w:"The cat drinks sweet milk.\n(बिल्ली मीठा दूध पीती है।)", e:"🐱", c: "#f59e0b"},
+{l:"Birds fly high in the blue sky.", w:"Birds fly high in the blue sky.\n(पक्षी नीले आसमान में ऊंचे उड़ते हैं।)", e:"🦅", c: "#06b6d4"},
+{l:"The sun shines bright today.", w:"The sun shines bright today.\n(सूरज आज तेज चमक रहा है।)", e:"☀️", c: "#eab308"},
+{l:"We go to school to learn new things.", w:"We go to school to learn new things.\n(हम नई चीजें सीखने स्कूल जाते हैं।)", e:"🏫", c: "#8b5cf6"}
+];
+
+const visualAdditionLearning = [
+{a: 2, b: 3, symbol: "🍎", title: "2 एप्पल्स में 3 एप्पल्स और मिलाए = 5 एप्पल्स!"},
+{a: 4, b: 2, symbol: "⭐", title: "4 स्टार्स में 2 स्टार्स और मिलाए = 6 स्टार्स!"},
+{a: 3, b: 3, symbol: "🎈", title: "3 गुब्बारों में 3 गुब्बारे और मिलाए = 6 गुब्बारे!"},
+{a: 5, b: 1, symbol: "⚽", title: "5 गेंदों में 1 गेंद और मिलाई = 6 गेंदें!"},
+{a: 3, b: 4, symbol: "🍬", title: "3 टॉफियों में 4 टॉफियां और मिलाईं = 7 टॉफियां!"}
+];
+
+const visualGreaterLessLearning = [
+{n1: 5, n2: 3, symbol: "🍎", sign: ">", title: "5 एप्पल्स 3 एप्पल्स से ज़्यादा हैं! (5 > 3)"},
+{n1: 2, n2: 6, symbol: "⭐", sign: "<", title: "2 स्टार्स 6 स्टार्स से कम हैं! (2 < 6)"},
+{n1: 7, n2: 4, symbol: "⚽", sign: ">", title: "7 गेंदें 4 गेंदों से ज़्यादा हैं! (7 > 4)"},
+{n1: 3, n2: 8, symbol: "🎈", sign: "<", title: "3 गुब्बारे 8 गुब्बारों से कम हैं! (3 < 8)"}
+];
+
+
+/* =========================================================
+   STATE & SOUND EFFECTS
+========================================================= */
+
+let age = 3;
+let currentMode = "";
+let currentIndex = 0;
+let score = 0;
+let wrongAnswers = 0;
+let worksheetQuestions = [];
+let answerLocked = false;
+let currentLearningList = [];
+let audioContext = null;
+
+function getClassName(a) {
+    const map = {
+        3: "Nursery",
+        4: "LKG",
+        5: "UKG",
+        6: "1st Class",
+        7: "2nd Class",
+        8: "3rd Class",
+        9: "4th Class",
+        10: "5th Class"
+    };
+    return map[a] || `Class ${a}`;
+}
+
+function getRecentTestHistory(currentAge) {
+    try {
+        const history = JSON.parse(safeStorage.getItem("baby_play_test_history") || "{}");
+        return history[currentAge] || [];
+    } catch(e) {
+        return [];
+    }
+}
+
+function recordTestResult(currentAge, currentScore) {
+    try {
+        const history = JSON.parse(safeStorage.getItem("baby_play_test_history") || "{}");
+        if (!history[currentAge]) {
+            history[currentAge] = [];
+        }
+        history[currentAge].push(currentScore);
+        if (history[currentAge].length > 10) {
+            history[currentAge].shift();
+        }
+        safeStorage.setItem("baby_play_test_history", JSON.stringify(history));
+        return history[currentAge];
+    } catch(e) {
+        return [];
+    }
+}
+
+function checkLevelUpEligibility(currentAge) {
+    const recentScores = getRecentTestHistory(currentAge);
+    if (recentScores.length < 10) return false;
+    
+    let perfectOrGreatCount = 0;
+    for (let s of recentScores) {
+        if (s >= 80) {
+            perfectOrGreatCount++;
+        }
+    }
+    return perfectOrGreatCount >= 8;
+}
+
+function getAudioContext(){
+    if(!audioContext){
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if(audioContext.state === "suspended"){
+        audioContext.resume();
+    }
+    return audioContext;
+}
+
+function tone(frequency, start, duration, type="sine", volume=.2){
+    try {
+        const ctx = getAudioContext();
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, start);
+        gain.gain.setValueAtTime(.0001, start);
+        gain.gain.exponentialRampToValueAtTime(volume, start + .03);
+        gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+        oscillator.start(start);
+        oscillator.stop(start + duration + .05);
+    } catch(e) {}
+}
+
+function soundTap(){
+    const ctx = getAudioContext();
+    tone(620, ctx.currentTime, .08, "sine", .12);
+}
+
+function soundCorrect(){
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+    tone(523.25, now,       .15, "triangle", .25);
+    tone(659.25, now + .10, .15, "triangle", .25);
+    tone(783.99, now + .20, .15, "triangle", .25);
+    tone(1046.50, now + .30, .35, "triangle", .30);
+}
+
+function soundWrong(){
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+    tone(160, now,       .18, "sawtooth", .18);
+    tone(120, now + .12, .25, "sawtooth", .18);
+}
+
+function soundFinish(){
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+    const notes = [440, 554.37, 659.25, 880, 1108.73, 1318.51];
+    notes.forEach((freq, index) => {
+        tone(freq, now + (index * 0.08), 0.2, "triangle", 0.25);
+    });
+}
+
+function selectAge(selectedAge, event){
+    age = selectedAge;
+    document.querySelectorAll(".age-button").forEach(button=>{
+        button.classList.remove("selected");
+    });
+    event.currentTarget.classList.add("selected");
+    
+    const contBtn = document.getElementById("continue-button");
+    contBtn.disabled = false;
+    contBtn.style.opacity = "1";
+    soundTap();
+}
+
+function continueFromAge(){
+    if(!age) return;
+    document.getElementById("age-screen").classList.add("hidden");
+    document.getElementById("menu-screen").classList.remove("hidden");
+    document.getElementById("menu-age-select").value = age;
+    document.getElementById("profile-text").textContent = `${getClassName(age)} Learning Adventure`;
+    buildMenu();
+    soundCorrect();
+}
+
+function changeAgeFromMenu(selectedAge){
+    age = Number(selectedAge);
+    soundTap();
+    document.getElementById("profile-text").textContent = `${getClassName(age)} Learning Adventure`;
+    buildMenu();
+}
+
+function buildMenu(){
+    const container = document.getElementById("sections-container");
+    container.innerHTML="";
+    
+    let learningFeatures = [];
+    let testFeatures = [];
+
+    if(age<=5){
+        learningFeatures = [
+            ["🔤","ABC A-Z","abc"],
+            ["🇮🇳","हिंदी वर्णमाला (क, ख, ग)","hindivarna"],
+            ["🔢","Counting","numbers"]
+        ];
+        testFeatures = [
+            ["⭐","Count Stars","ws1"],
+            ["🔎","Find Number","ws2"],
+            ["🍎","Apple Plus (विजुअल फ्रूट मैथ)","ws3"],
+            ["🇮🇳","पहचानो अक्षर (Hindi Quiz)","hinditest"],
+            ["🧩","Match Game","ws4"]
+        ];
+    } else if(age===5){
+        learningFeatures = [
+            ["🔤","ABC A-Z","abc"],
+            ["🇮🇳","हिंदी वर्णमाला (क, ख, ग)","hindivarna"],
+            ["🔢","Counting 1-100","numbers100"]
+        ];
+        testFeatures = [
+            ["⭐","Count Stars","ws1"],
+            ["🍎","Apple Plus (विजुअल फ्रूट मैथ)","ws3"],
+            ["🇮🇳","पहचानो अक्षर (Hindi Quiz)","hinditest"],
+            ["🧩","Match Game","ws4"]
+        ];
+    } else if(age===6){
+        learningFeatures = [
+            ["🔢","Counting 1-50","numbers50"],
+            ["🇮🇳","हिंदी वर्णमाला (क, ख, ग)","hindivarna"],
+            ["🔤","Phonics & Word Building","phonics"]
+        ];
+        testFeatures = [
+            ["🧩","Missing Letter Game","missingword"],
+            ["🍎","Apple Plus (विजुअल फ्रूट मैथ)","ws3"],
+            ["🇮🇳","पहचानो अक्षर (Hindi Quiz)","hinditest"]
+        ];
+    } else if(age===7){
+        learningFeatures = [
+            ["➕","Learn Addition (जोड़ना सीखें)","visualadd"],
+            ["⚖️","Greater & Less (> <)","visualgreaterless"],
+            ["📝","Easy English Sentences","sentences"]
+        ];
+        testFeatures = [
+            ["➕","2 Digit Addition","addition2"],
+            ["🧠","Math Story","wordmath"],
+            ["🔤","Sentence Fill in Blanks","sentencefill"],
+            ["⚖️","Greater & Less Quiz","greaterlessquiz"]
+        ];
+    } else if(age===8){
+        learningFeatures = [
+            ["✍️","हिंदी की मात्राएँ (Matras)","hindimatras"],
+            ["➖","घटाव सीखें (Visual Subtraction)","visualsub"],
+            ["✖️","गुणा सीखें (Visual Multiplication)","visualmul"]
+        ];
+        testFeatures = [
+            ["✍️","मात्रा पहचानो टेस्ट","matratest"],
+            ["➖","घटाव क्विज़ (Subtraction Quiz)","subtraction"],
+            ["✖️","गुणा अभ्यास (Tables)","tables"]
+        ];
+    } else if(age===9){
+        learningFeatures = [
+            ["📖","हिंदी में शब्द पढ़ना सीखें","hindiwords"],
+            ["✖️","2 से 5 तक के टेबल (Tables 2-5)","tables2to5"],
+            ["📝","English Sentences","sentences"]
+        ];
+        testFeatures = [
+            ["📖","हिंदी शब्द पढ़ना टेस्ट","wordreadtest"],
+            ["✖️","2 से 5 टेबल टेस्ट (Table Quiz)","table2to5test"],
+            ["➖","Subtraction","subtraction"]
+        ];
+    } else if(age>=10){
+        // 5th Class - 2 से 20 तक टेबल, डिवीजन (भाग), और एडवांस्ड हिंदी वाक्य अभ्यास
+        learningFeatures = [
+            ["✖️","2 से 20 तक के टेबल (Tables 2-20)","tables2to20"],
+            ["➗","भाग सीखें (Visual Division)","visualdiv"],
+            ["📖","हिंदी वाक्य पढ़ना और समझना","advancedhindi"]
+        ];
+        testFeatures = [
+            ["✖️","2 से 20 टेबल टेस्ट (Table 2-20 Quiz)","table2to20test"],
+            ["➗","भाग टेस्ट (Division Quiz)","divisionquiz"],
+            ["📝","हिंदी वाक्य खाली स्थान भरो टेस्ट","hindisentencequiz"]
+        ];
+    }
+
+    if(learningFeatures.length > 0){
+        const learningHeader = document.createElement("div");
+        learningHeader.className = "text-xs font-black uppercase tracking-wider text-yellow-200 px-1 mb-1 mt-1";
+        learningHeader.textContent = "📚 Learning Zone";
+        container.appendChild(learningHeader);
+
+        const learningGrid = document.createElement("div");
+        learningGrid.className = "grid grid-cols-2 gap-2 mb-3";
+        learningFeatures.forEach(feature=>{
+            const button = document.createElement("button");
+            button.className = "mode-card p-2.5 flex flex-col items-center justify-center text-center";
+            button.innerHTML=`
+                <div class="text-2xl mb-1">${feature[0]}</div>
+                <div class="font-black text-xs">${feature[1]}</div>
+            `;
+            button.onclick=()=> { soundTap(); openFeature(feature[2]); };
+            learningGrid.appendChild(button);
+        });
+        container.appendChild(learningGrid);
+    }
+
+    if(testFeatures.length > 0){
+        const testHeader = document.createElement("div");
+        testHeader.className = "text-xs font-black uppercase tracking-wider text-yellow-200 px-1 mb-1";
+        const historyCount = getRecentTestHistory(age).length;
+        testHeader.innerHTML = `⭐ Test & Practice Zone <span class="text-xs bg-yellow-400 text-slate-900 px-1.5 py-0.5 rounded-full ml-1">Tests: ${historyCount}/10</span>`;
+        container.appendChild(testHeader);
+
+        const testGrid = document.createElement("div");
+        testGrid.className = "grid grid-cols-2 gap-2";
+        testFeatures.forEach(feature=>{
+            const button = document.createElement("button");
+            button.className = "mode-card p-2.5 flex flex-col items-center justify-center text-center";
+            button.innerHTML=`
+                <div class="text-2xl mb-1">${feature[0]}</div>
+                <div class="font-black text-xs">${feature[1]}</div>
+            `;
+            button.onclick=()=> { soundTap(); openFeature(feature[2]); };
+            testGrid.appendChild(button);
+        });
+        container.appendChild(testGrid);
+    }
+}
+
+function openFeature(mode){
+    currentMode=mode;
+    currentIndex=0;
+    score=0;
+    wrongAnswers=0;
+    answerLocked=false;
+
+    document.getElementById("menu-screen").classList.add("hidden");
+    document.getElementById("app-screen").classList.remove("hidden");
+    document.getElementById("score-badge").classList.add("hidden");
+    document.getElementById("navigation").classList.add("hidden");
+    document.getElementById("app-title").textContent = getFeatureTitle(mode);
+
+    if(mode==="abc" || mode==="numbers"){
+        currentLearningList = mode==="abc" ? alphabet : numbers;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="hindivarna"){
+        currentLearningList = hindiVarnamala;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="hindimatras"){
+        currentLearningList = hindiMatras;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="hindiwords"){
+        currentLearningList = hindiWordReadingList;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="tables2to5"){
+        currentLearningList = tables2to5List;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="tables2to20"){
+        currentLearningList = tables2to20List;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="visualdiv"){
+        currentLearningList = divisionLearningList;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="advancedhindi"){
+        currentLearningList = advancedHindiSentences;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="visualsub"){
+        currentLearningList = visualSubtractionLearning;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="visualmul"){
+        currentLearningList = visualMultiplicationLearning;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="numbers100"){
+        currentLearningList = createNumbers100();
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="numbers50"){
+        currentLearningList = numbers50;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="phonics"){
+        currentLearningList = [...phonicWordsList].sort(() => Math.random() - 0.5);
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="english"){
+        currentLearningList = englishWordsList;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="sentences"){
+        currentLearningList = sentencesList;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="visualadd"){
+        currentLearningList = visualAdditionLearning;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    if(mode==="visualgreaterless"){
+        currentLearningList = visualGreaterLessLearning;
+        document.getElementById("navigation").classList.remove("hidden");
+        renderLearning();
+        return;
+    }
+    setupWorksheet(mode);
+}
+
+function getFeatureTitle(mode){
+    const titles={
+        abc:"ABC Adventure",
+        hindivarna:"हिंदी वर्णमाला (क, ख, ग)",
+        hindimatras:"हिंदी की मात्राएँ (Matras)",
+        hindiwords:"हिंदी शब्द पढ़ना सीखें",
+        tables2to5:"2 से 5 तक के टेबल",
+        tables2to20:"2 से 20 तक के टेबल",
+        visualdiv:"भाग (Division) सीखें",
+        advancedhindi:"हिंदी वाक्य पढ़ना और समझना",
+        hinditest:"हिंदी अक्षर पहचानो टेस्ट",
+        matratest:"मात्रा पहचानो टेस्ट",
+        wordreadtest:"हिंदी शब्द पढ़ना टेस्ट",
+        table2to5test:"2 से 5 टेबल टेस्ट",
+        table2to20test:"2 से 20 टेबल टेस्ट",
+        divisionquiz:"भाग (Division) टेस्ट",
+        hindisentencequiz:"हिंदी वाक्य रिक्त स्थान टेस्ट",
+        visualsub:"घटाव सीखें (Visual Subtraction)",
+        visualmul:"गुणा सीखें (Visual Multiplication)",
+        numbers:"Number Adventure",
+        numbers100:"Counting 1-100",
+        numbers50:"Counting 1-50",
+        phonics:"Phonics & Word Building",
+        ws1:"Count Stars",
+        ws2:"Find Number",
+        ws3:"Visual Fruit Math",
+        ws4:"Match Game ✨",
+        addition:"Easy Addition Quiz",
+        missingword:"Missing Letter Game 🧩",
+        addition2:"2 Digit Addition",
+        wordmath:"Math Story",
+        sentences:"Easy English Sentences ✨",
+        visualadd:"Learn Addition (जोड़ना सीखें) ➕",
+        visualgreaterless:"Greater & Less (> <) ⚖️",
+        sentencefill:"Sentence Fill in Blanks 🔤",
+        greaterlessquiz:"Greater & Less Quiz ⚖️",
+        tables:"Tables 2-10",
+        tables20:"Tables 2-20",
+        subtraction:"Subtraction",
+        multiplication:"Multiplication",
+        english:"English Words",
+        tests:"Test Zone"
+    };
+    return titles[mode] || "Learning";
+}
+
+function createNumbers100(){
+    const words=["One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen","Twenty"];
+    const list=[];
+    for(let i=1; i<=100; i++){
+        let word="";
+        if(i<=20){
+            word=words[i-1];
+        }else if(i===30){word="Thirty";}
+        else if(i===40){word="Forty";}
+        else if(i===50){word="Fifty";}
+        else if(i===60){word="Sixty";}
+        else if(i===70){word="Seventy";}
+        else if(i===80){word="Eighty";}
+        else if(i===90){word="Ninety";}
+        else if(i===100){word="One Hundred";}
+        else{
+            const tens=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+            word = tens[Math.floor(i/10)] + " " + words[(i%10)-1];
+        }
+        list.push({l:String(i), w:word, e:"⭐", n:i, c:"#4f8cff"});
+    }
+    return list;
+}
+
+function renderLearning(){
+    const data = currentLearningList[currentIndex];
+    const content = document.getElementById("content");
+    const isLetter = currentMode==="abc" || currentMode==="hindivarna" || currentMode==="hindimatras" || currentMode==="hindiwords" || currentMode==="sentences" || currentMode==="phonics";
+    let visual="";
+
+    if(currentMode === "visualsub"){
+        const rem = data.a - data.b;
+        visual=`
+            <div class="text-xl font-black mb-3 text-red-500">➖ घटाव सीखें (How to Subtract)</div>
+            <div class="flex items-center justify-center gap-2 mb-4 flex-wrap">
+                <div class="math-box">
+                    <div class="text-xs font-bold text-gray-400 mb-1">कुल: ${data.a}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[90px]">${Array(data.a).fill(0).map(()=>`<span class="text-2xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+                <div class="text-2xl font-black">-</div>
+                <div class="math-box">
+                    <div class="text-xs font-bold text-gray-400 mb-1">हटाए: ${data.b}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[90px]">${Array(data.b).fill(0).map(()=>`<span class="text-2xl opacity-40">❌</span>`).join("")}</div>
+                </div>
+                <div class="text-2xl font-black">=</div>
+                <div class="math-box bg-red-50 border-red-200">
+                    <div class="text-xs font-bold text-red-600 mb-1">बचे: ${rem}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[90px]">${Array(rem).fill(0).map(()=>`<span class="text-2xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+            </div>
+            <div class="text-base font-bold text-gray-700 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">${data.title}</div>
+        `;
+    }else if(currentMode === "visualmul"){
+        const total = data.a * data.b;
+        visual=`
+            <div class="text-xl font-black mb-3 text-purple-600">✖️ गुणा सीखें (How to Multiply)</div>
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="math-box">
+                    <div class="text-xs font-bold text-purple-500 mb-1">समूह: ${data.a}</div>
+                    <div class="text-lg font-black">${data.a} बार</div>
+                </div>
+                <div class="text-2xl font-black">×</div>
+                <div class="math-box">
+                    <div class="text-xs font-bold text-purple-500 mb-1">हर समूह में: ${data.b}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[80px]">${Array(data.b).fill(0).map(()=>`<span class="text-xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+                <div class="text-2xl font-black">=</div>
+                <div class="math-box bg-purple-50 border-purple-200">
+                    <div class="text-xs font-bold text-purple-600 mb-1">कुल: ${total}</div>
+                    <div class="text-lg font-black text-purple-600">${total}</div>
+                </div>
+            </div>
+            <div class="text-base font-bold text-gray-700 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">${data.title}</div>
+        `;
+    }else if(currentMode === "tables2to5" || currentMode === "tables2to20"){
+        visual=`
+            <div class="text-2xl font-black mb-2 text-blue-600">${data.l}</div>
+            <div class="bg-white/90 border-4 border-blue-200 p-4 rounded-2xl shadow-sm text-xl font-black text-slate-700 leading-relaxed max-w-xs mx-auto">
+                ${data.contentStr}
+            </div>
+        `;
+    }else if(currentMode === "visualdiv"){
+        const eachGroup = data.total / data.groups;
+        let groupsHTML = "";
+        for(let g=0; g<data.groups; g++){
+            groupsHTML += `
+                <div class="math-box bg-indigo-50 border-indigo-200 p-2 m-1">
+                    <div class="text-xs font-bold text-indigo-600 mb-1">डिब्बा ${g+1}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[70px]">${Array(eachGroup).fill(0).map(()=>`<span class="text-xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+            `;
+        }
+        visual=`
+            <div class="text-lg font-black mb-2 text-indigo-600">➗ भाग (Division) का मतलब बराबर बांटना</div>
+            <div class="text-sm font-bold text-slate-500 mb-2">कुल वस्तुएँ: ${data.total} | ${data.groups} बच्चों में बराबर बांटें</div>
+            <div class="flex items-center justify-center gap-2 mb-3 flex-wrap">
+                ${groupsHTML}
+            </div>
+            <div class="text-sm font-bold text-slate-700 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">${data.title}</div>
+        `;
+    }else if(currentMode === "advancedhindi"){
+        visual=`
+            <div class="text-5xl bounce mb-2">${data.e}</div>
+            <div class="text-xs font-bold text-indigo-500 uppercase tracking-wide mb-1">📖 हिंदी वाक्य पढ़ना और समझना</div>
+            <div class="text-2xl md:text-3xl font-black px-3 mb-2 text-slate-800">${data.sentence}</div>
+            <div class="text-sm font-bold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200 mb-2">${data.hint}</div>
+            <div class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200 max-w-xs mx-auto shadow-sm">${data.meaning}</div>
+        `;
+    }else if(currentMode === "visualadd"){
+        const sum = data.a + data.b;
+        visual=`
+            <div class="text-xl font-black mb-3 text-blue-600">➕ जोड़ना सीखें (How to Add)</div>
+            <div class="flex items-center justify-center gap-2 mb-4 flex-wrap">
+                <div class="math-box">
+                    <div class="text-xs font-bold text-gray-400 mb-1">${data.a}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[90px]">${Array(data.a).fill(0).map(()=>`<span class="text-2xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+                <div class="text-2xl font-black">+</div>
+                <div class="math-box">
+                    <div class="text-xs font-bold text-gray-400 mb-1">${data.b}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[90px]">${Array(data.b).fill(0).map(()=>`<span class="text-2xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+                <div class="text-2xl font-black">=</div>
+                <div class="math-box bg-green-50 border-green-200">
+                    <div class="text-xs font-bold text-green-600 mb-1">${sum}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[90px]">${Array(sum).fill(0).map(()=>`<span class="text-2xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+            </div>
+            <div class="text-base font-bold text-gray-700 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">${data.title}</div>
+        `;
+    }else if(currentMode === "visualgreaterless"){
+        visual=`
+            <div class="text-xl font-black mb-3 text-blue-600">⚖️ छोटा और बड़ा (Greater & Less Than)</div>
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="math-box">
+                    <div class="text-xs font-bold text-gray-400 mb-1">${data.n1}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[80px]">${Array(data.n1).fill(0).map(()=>`<span class="text-2xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+                <div class="text-4xl font-black text-pink-500 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md">${data.sign}</div>
+                <div class="math-box">
+                    <div class="text-xs font-bold text-gray-400 mb-1">${data.n2}</div>
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[80px]">${Array(data.n2).fill(0).map(()=>`<span class="text-2xl">${data.symbol}</span>`).join("")}</div>
+                </div>
+            </div>
+            <div class="text-base font-bold text-gray-700 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">${data.title}</div>
+        `;
+    }else if(isLetter){
+        if(currentMode === "sentences"){
+            visual=`
+                <div class="text-5xl bounce mb-4">${data.e}</div>
+                <div class="text-2xl md:text-3xl font-black px-4 mb-3" style="color:${data.c}; font-family:'Fredoka'; line-height:1.4;">${data.l}</div>
+                <div class="text-lg font-bold text-gray-500 bg-white/80 p-3 rounded-2xl shadow-sm border border-gray-100 max-w-sm mx-auto">${data.w.split('\n')[1] || ''}</div>
+            `;
+        } else if(currentMode === "hindiwords"){
+            visual=`
+                <div class="text-6xl bounce mb-3">${data.e}</div>
+                <div class="text-4xl font-black px-4 mb-2" style="color:${data.c}; font-family:'Fredoka';">${data.l}</div>
+            `;
+        } else {
+            visual=`
+                <div class="learning-letter bounce px-3" style="color:${data.c}; font-size:4.5rem; line-height:1.3; font-family:'Fredoka';">${data.l}</div>
+                <div class="text-5xl bounce mt-3">${data.e}</div>
+            `;
+        }
+    }else{
+        const count = data.n || Number(data.l) || 1;
+        let columns=5;
+        if(count>10) columns=6;
+        if(count>30) columns=8;
+        if(count>60) columns=10;
+
+        visual=`
+            <div class="learning-number bounce" style="color:${data.c}; font-size: 4rem;">${data.l}</div>
+            <div class="star-grid bounce mt-3" style="grid-template-columns:repeat(${columns},1fr); max-width:320px;">
+                ${Array(Math.min(count,100)).fill(0).map(()=>`<span class="text-xl">${data.e}</span>`).join("")}
+            </div>
+        `;
+    }
+
+    content.innerHTML=`
+        <div class="w-full text-center pop flex flex-col items-center justify-center">
+            ${visual}
+            ${currentMode !== "sentences" && currentMode !== "visualadd" && currentMode !== "visualsub" && currentMode !== "visualmul" && currentMode !== "tables2to5" && currentMode !== "tables2to20" && currentMode !== "visualdiv" && currentMode !== "advancedhindi" && currentMode !== "visualgreaterless" ? `<div class="text-2xl font-bold mt-4 text-gray-700 px-4">${data.w}</div>` : ``}
+        </div>
+    `;
+
+    updateProgress();
+}
+
+function nextLearning(){
+    soundTap();
+    currentIndex++;
+    if(currentIndex>=currentLearningList.length) currentIndex=0;
+    renderLearning();
+}
+
+function previousLearning(){
+    soundTap();
+    currentIndex--;
+    if(currentIndex<0) currentIndex = currentLearningList.length-1;
+    renderLearning();
+}
+
+function updateProgress(){
+    const progress = document.getElementById("progress");
+    progress.innerHTML="";
+    const total = worksheetQuestions.length > 0 ? worksheetQuestions.length : Math.min(currentLearningList.length, 10);
+    const active = worksheetQuestions.length > 0 ? currentIndex : Math.floor((currentIndex / currentLearningList.length) * total);
+
+    for(let i=0; i<total; i++){
+        const dot = document.createElement("div");
+        dot.className="progress-dot";
+        if(i===active) dot.classList.add("active");
+        progress.appendChild(dot);
+    }
+}
+
+function setupWorksheet(mode){
+    worksheetQuestions=[];
+    currentIndex=0;
+    score=0;
+    wrongAnswers=0;
+    answerLocked=false;
+
+    document.getElementById("score-badge").classList.remove("hidden");
+    document.getElementById("score").textContent="0";
+
+    const questionCount = (age === 6) ? 10 : 5;
+
+    const sampleWords = [
+        {word: "CAT", emoji: "🐱", missingIndex: 1, target: "A", options: ["A", "E", "O"]},
+        {word: "DOG", emoji: "🐶", missingIndex: 1, target: "O", options: ["O", "I", "U"]},
+        {word: "SUN", emoji: "☀️", missingIndex: 1, target: "U", options: ["U", "A", "E"]},
+        {word: "BAT", emoji: "🏏", missingIndex: 1, target: "A", options: ["A", "O", "I"]},
+        {word: "PIG", emoji: "🐷", missingIndex: 1, target: "I", options: ["I", "E", "A"]},
+        {word: "HEN", emoji: "🐔", missingIndex: 1, target: "E", options: ["E", "A", "U"]},
+        {word: "CUP", emoji: "🥤", missingIndex: 1, target: "U", options: ["U", "A", "I"]},
+        {word: "HAT", emoji: "👒", missingIndex: 1, target: "A", options: ["A", "E", "O"]},
+        {word: "PEN", emoji: "🖊️", missingIndex: 1, target: "E", options: ["E", "I", "U"]},
+        {word: "VAN", emoji: "🚐", missingIndex: 1, target: "A", options: ["A", "O", "E"]}
+    ];
+
+    const sentenceFillList = [
+        {sentence: "This is ___ cat.", target: "my", options: ["my", "it", "he"], emoji: "🐱"},
+        {sentence: "She ___ a nice book.", target: "reads", options: ["reads", "run", "eat"], emoji: "📖"},
+        {sentence: "The sun is very ___.", target: "hot", options: ["hot", "cold", "blue"], emoji: "☀️"},
+        {sentence: "Birds fly in the ___.", target: "sky", options: ["sky", "water", "bed"], emoji: "🦅"},
+        {sentence: "We go to ___ to study.", target: "school", options: ["school", "park", "zoo"], emoji: "🏫"}
+    ];
+
+    for(let i=0; i<questionCount; i++){
+        if(mode==="ws1"){
+            const target = Math.floor(Math.random()*10)+1;
+            worksheetQuestions.push({target, options:makeOptions(target,1,12)});
+        }else if(mode==="ws2" || mode==="tests"){
+            const target = Math.floor(Math.random()*20)+1;
+            worksheetQuestions.push({target, options:makeOptions(target,1,20)});
+        }else if(mode==="hinditest"){
+            const sample = hindiVarnamala[Math.floor(Math.random()*hindiVarnamala.length)];
+            const target = sample.l;
+            const targetEmoji = sample.e;
+            const targetWord = sample.w;
+            worksheetQuestions.push({isHindiTest: true, target, targetEmoji, targetWord, options:makeOptionsString(target, hindiVarnamala.map(h=>h.l))});
+        }else if(mode==="matratest"){
+            const sample = hindiMatras[Math.floor(Math.random()*hindiMatras.length)];
+            const target = sample.l;
+            const targetEmoji = sample.e;
+            const targetWord = sample.w;
+            worksheetQuestions.push({isMatraTest: true, target, targetEmoji, targetWord, options:makeOptionsString(target, hindiMatras.map(m=>m.l))});
+        }else if(mode==="wordreadtest"){
+            const sample = hindiWordReadingList[Math.floor(Math.random()*hindiWordReadingList.length)];
+            const target = sample.l;
+            const targetEmoji = sample.e;
+            const targetWord = sample.w;
+            worksheetQuestions.push({isWordReadTest: true, target, targetEmoji, targetWord, options:makeOptionsString(target, hindiWordReadingList.map(w=>w.l))});
+        }else if(mode==="table2to5test"){
+            const sample = tableQuizList[Math.floor(Math.random()*tableQuizList.length)];
+            worksheetQuestions.push(sample);
+        }else if(mode==="table2to20test"){
+            const sample = table2to20QuizList[Math.floor(Math.random()*table2to20QuizList.length)];
+            worksheetQuestions.push(sample);
+        }else if(mode==="divisionquiz"){
+            const sample = divisionQuizList[Math.floor(Math.random()*divisionQuizList.length)];
+            worksheetQuestions.push(sample);
+        }else if(mode==="hindisentencequiz"){
+            const sample = advancedHindiTestPool[Math.floor(Math.random()*advancedHindiTestPool.length)];
+            worksheetQuestions.push({
+                isHindiSentenceTest: true,
+                sentence: sample.sentence,
+                target: sample.target,
+                emoji: sample.emoji,
+                options: [...sample.options].sort(()=>Math.random()-.5)
+            });
+        }else if(mode==="ws3"){
+            const n1 = Math.floor(Math.random()*6)+1;
+            const n2 = Math.floor(Math.random()*6)+1;
+            const target = n1+n2;
+            worksheetQuestions.push({n1, n2, target, options:makeOptions(target,1,12)});
+        }else if(mode==="missingword"){
+            const qData = sampleWords[Math.floor(Math.random() * sampleWords.length)];
+            worksheetQuestions.push({
+                isMissingWord: true,
+                word: qData.word,
+                emoji: qData.emoji,
+                missingIndex: qData.missingIndex,
+                target: qData.target,
+                options: [...qData.options].sort(() => Math.random() - 0.5)
+            });
+        }else if(mode==="sentencefill"){
+            const sData = sentenceFillList[Math.floor(Math.random() * sentenceFillList.length)];
+            worksheetQuestions.push({
+                isSentenceFill: true,
+                sentence: sData.sentence,
+                emoji: sData.emoji,
+                target: sData.target,
+                options: [...sData.options].sort(() => Math.random() - 0.5)
+            });
+        }else if(mode==="greaterlessquiz"){
+            const n1 = Math.floor(Math.random()*15)+1;
+            let n2 = Math.floor(Math.random()*15)+1;
+            while(n1 === n2) n2 = Math.floor(Math.random()*15)+1;
+            const target = n1 > n2 ? ">" : "<";
+            worksheetQuestions.push({
+                isGreaterLess: true,
+                n1: n1,
+                n2: n2,
+                target: target,
+                options: [">", "<", "="].sort(() => Math.random() - 0.5)
+            });
+        }else if(mode==="ws4"){
+            const sample = alphabet[Math.floor(Math.random()*alphabet.length)];
+            const target = sample.l;
+            const targetEmoji = sample.e;
+            worksheetQuestions.push({target, targetEmoji, options:makeOptionsString(target, alphabet.map(a=>a.l))});
+        }else if(mode==="addition"){
+            const a = Math.floor(Math.random()*10)+1;
+            const b = Math.floor(Math.random()*10)+1;
+            const target=a+b;
+            worksheetQuestions.push({a, b, target, options:makeOptions(target,2,20)});
+        }else if(mode==="addition2"){
+            const a = Math.floor(Math.random()*50)+10;
+            const b = Math.floor(Math.random()*40)+10;
+            const target=a+b;
+            worksheetQuestions.push({a, b, target, options:makeOptions(target,10,100)});
+        }else if(mode==="subtraction"){
+            const a = Math.floor(Math.random()*50)+20;
+            const b = Math.floor(Math.random()*20)+1;
+            const target=a-b;
+            worksheetQuestions.push({a, b, target, options:makeOptions(target,1,70)});
+        }else if(mode==="multiplication"){
+            const a = Math.floor(Math.random()*10)+1;
+            const b = Math.floor(Math.random()*10)+1;
+            const target=a*b;
+            worksheetQuestions.push({a, b, target, options:makeOptions(target,1,100)});
+        }else if(mode==="tables" || mode==="tables20"){
+            const limit = mode==="tables" ? 10 : 20;
+            const a = Math.floor(Math.random()*limit)+2;
+            const b = Math.floor(Math.random()*10)+1;
+            const target = a*b;
+            worksheetQuestions.push({a, b, target, options:makeOptions(target, 2, limit*10)});
+        }else if(mode==="wordmath"){
+            const apples = Math.floor(Math.random()*8)+2;
+            const more = Math.floor(Math.random()*6)+1;
+            const target = apples + more;
+            worksheetQuestions.push({word:`Rahul has ${apples} apples. He gets ${more} more. How many apples does have now?`, target, options:makeOptions(target, 2, 20)});
+        }else{
+            const target = Math.floor(Math.random()*15)+1;
+            worksheetQuestions.push({target, options:makeOptions(target,1,20)});
+        }
+    }
+    worksheetQuestions.sort(() => Math.random() - 0.5);
+    renderWorksheet();
+}
+
+function makeOptions(target, min, max){
+    const options=[target];
+    while(options.length<3){
+        const value = Math.floor(Math.random()*(max-min+1))+min;
+        if(!options.includes(value)) options.push(value);
+    }
+    return options.sort(()=>Math.random()-.5);
+}
+
+function makeOptionsString(target, pool){
+    const options=[target];
+    while(options.length<3){
+        const rand = pool[Math.floor(Math.random()*pool.length)];
+        if(!options.includes(rand)) options.push(rand);
+    }
+    return options.sort(()=>Math.random()-.5);
+}
+
+function renderWorksheet(){
+    const q = worksheetQuestions[currentIndex];
+    const content = document.getElementById("content");
+    let questionHTML="";
+
+    if(q.isHindiTest){
+        questionHTML=`
+            <div class="text-xl font-black mb-3 text-blue-600">🇮🇳 सही हिंदी अक्षर पहचानो!</div>
+            <div class="text-6xl mb-2">${q.targetEmoji}</div>
+            <div class="text-lg font-bold text-gray-500 mb-4">${q.targetWord}</div>
+        `;
+    }else if(q.isMatraTest){
+        questionHTML=`
+            <div class="text-xl font-black mb-3 text-red-500">✍️ सही मात्रा पहचानो!</div>
+            <div class="text-6xl mb-2">${q.targetEmoji}</div>
+            <div class="text-lg font-bold text-gray-500 mb-4">${q.targetWord}</div>
+        `;
+    }else if(q.isWordReadTest){
+        questionHTML=`
+            <div class="text-xl font-black mb-3 text-purple-600">📖 सही हिंदी शब्द पहचानो!</div>
+            <div class="text-6xl mb-2">${q.targetEmoji}</div>
+            <div class="text-sm font-bold text-gray-500 mb-4">इस चित्र के लिए सही शब्द कौन सा है?</div>
+        `;
+    }else if(q.isTableTest){
+        questionHTML=`
+            <div class="text-xl font-black mb-5">✖️ गुणा बताओ: <span class="text-blue-500">${q.a}</span> × <span class="text-pink-500">${q.b}</span> = ?</div>
+        `;
+    }else if(q.isDivisionTest){
+        questionHTML=`
+            <div class="text-xl font-black mb-5">➗ भाग बताओ: <span class="text-indigo-600">${q.a}</span> ÷ <span class="text-pink-500">${q.b}</span> = ?</div>
+        `;
+    }else if(q.isHindiSentenceTest){
+        questionHTML=`
+            <div class="text-xl font-black mb-3 text-indigo-600">📝 रिक्त स्थान भरें (Fill in the blank)</div>
+            <div class="text-5xl mb-3">${q.emoji}</div>
+            <div class="text-2xl font-black text-slate-800 mb-5">${q.sentence}</div>
+        `;
+    }else if(q.isMissingWord){
+        const chars = q.word.split("");
+        chars[q.missingIndex] = "_";
+        const displayWord = chars.join(" ");
+        questionHTML=`
+            <div class="text-xl font-black mb-3">🧩 Fill in the Missing Letter!</div>
+            <div class="text-5xl mb-2">${q.emoji}</div>
+            <div class="text-4xl font-black tracking-widest text-blue-600 mb-5">${displayWord}</div>
+        `;
+    }else if(q.isSentenceFill){
+        questionHTML=`
+            <div class="text-xl font-black mb-3">🔤 Fill in the Blank!</div>
+            <div class="text-5xl mb-2">${q.emoji}</div>
+            <div class="text-2xl font-black text-blue-600 mb-5">${q.sentence}</div>
+        `;
+    }else if(q.isGreaterLess){
+        questionHTML=`
+            <div class="text-xl font-black mb-3">⚖️ कौन सा चिह्न आएगा? (Greater or Less)</div>
+            <div class="text-4xl font-black text-blue-600 mb-5">${q.n1}  [ ? ]  ${q.n2}</div>
+        `;
+    }else if(currentMode==="ws1"){
+        questionHTML=`
+            <div class="text-xl font-black mb-3">⭐ Count the Stars</div>
+            <div class="grid grid-cols-5 gap-2 max-w-sm mx-auto mb-5">
+                ${Array(q.target).fill(0).map(()=>`<span class="text-3xl">⭐</span>`).join("")}
+            </div>
+        `;
+    }else if(currentMode==="ws2" || currentMode==="tests"){
+        questionHTML=`
+            <div class="text-xl font-black mb-2">🔎 Find this number</div>
+            <div class="learning-number" style="color:#f97316">${q.target}</div>
+        `;
+    }else if(currentMode==="ws3"){
+        questionHTML=`
+            <div class="text-xl font-black mb-3">🍎 Visual Fruit Addition</div>
+            <div class="flex items-center justify-center gap-3 mb-5">
+                <div class="math-box">
+                    <div class="text-sm font-bold text-gray-400 mb-1">(${q.n1})</div>
+                    <div class="flex flex-wrap justify-center gap-1">${Array(q.n1).fill(0).map(()=>`<span class="text-2xl">🍎</span>`).join("")}</div>
+                </div>
+                <div class="text-3xl font-black">+</div>
+                <div class="math-box">
+                    <div class="text-sm font-bold text-gray-400 mb-1">(${q.n2})</div>
+                    <div class="flex flex-wrap justify-center gap-1">${Array(q.n2).fill(0).map(()=>`<span class="text-2xl">🍎</span>`).join("")}</div>
+                </div>
+            </div>
+        `;
+    }else if(currentMode==="ws4"){
+        questionHTML=`
+            <div class="text-xl font-black mb-3">🧩 Match Letter</div>
+            <div class="text-6xl mb-3">${q.targetEmoji}</div>
+            <div class="text-sm font-bold text-gray-500 mb-4">Which letter matches this?</div>
+        `;
+    }else if(currentMode==="addition" || currentMode==="addition2"){
+        questionHTML=`<div class="text-xl font-black mb-5">➕ What is <span class="text-blue-500">${q.a}</span> + <span class="text-pink-500">${q.b}</span>?</div>`;
+    }else if(currentMode==="subtraction"){
+        questionHTML=`<div class="text-xl font-black mb-5">➖ What is <span class="text-blue-500">${q.a}</span> - <span class="text-pink-500">${q.b}</span>?</div>`;
+    }else if(currentMode==="multiplication"){
+        questionHTML=`<div class="text-xl font-black mb-5">✖️ What is <span class="text-blue-500">${q.a}</span> × <span class="text-pink-500">${q.b}</span>?</div>`;
+    }else if(currentMode==="tables" || currentMode==="tables20"){
+        questionHTML=`<div class="text-xl font-black mb-5">✖️ What is <span class="text-blue-500">${q.a}</span> × <span class="text-bink-500">${q.b}</span>?</div>`;
+    }else if(currentMode==="wordmath"){
+        questionHTML=`<div class="text-lg font-black mb-5 px-2">🧠 ${q.word}</div>`;
+    }
+
+    content.innerHTML=`
+        <div class="kids-card w-full max-w-md p-5 text-center pop">
+            ${questionHTML}
+            <div class="grid grid-cols-3 gap-3">
+                ${q.options.map(option=>`
+                    <button class="answer-option" data-answer="${option}" onclick="soundTap(); checkAnswer('${option}')">${option}</button>
+                `).join("")}
+            </div>
+        </div>
+    `;
+
+    updateProgress();
+}
+
+function checkAnswer(selected){
+    if(answerLocked) return;
+    const q = worksheetQuestions[currentIndex];
+    if(!q) return;
+    answerLocked=true;
+
+    const targetVal = String(q.target);
+    const correct = String(selected) === targetVal;
+    const buttons = [...document.querySelectorAll(".answer-option")];
+    buttons.forEach(button=> button.disabled=true);
+
+    const chosen = buttons.find(button=> String(button.dataset.answer) === String(selected));
+    const correctButton = buttons.find(button=> String(button.dataset.answer) === targetVal);
+
+    if(correct){
+        score = Math.min(100, Math.round(score + (100 / worksheetQuestions.length)));
+        if(chosen) chosen.classList.add("answer-correct");
+        soundCorrect();
+        createConfetti(innerWidth/2, innerHeight/2);
+    }else{
+        wrongAnswers++;
+        if(chosen) chosen.classList.add("answer-wrong");
+        if(correctButton) correctButton.classList.add("answer-correct");
+        soundWrong();
+    }
+
+    document.getElementById("score").textContent=score;
+
+    setTimeout(()=>{
+        currentIndex++;
+        answerLocked=false;
+        if(currentIndex >= worksheetQuestions.length){
+            finishTest();
+        }else{
+            renderWorksheet();
+        }
+    }, correct ? 900 : 1500);
+}
+
+function finishTest(){
+    soundFinish();
+    
+    recordTestResult(age, score);
+    saveHistory();
+    
+    const canLevelUp = checkLevelUpEligibility(age);
+    let levelUpMessage = "";
+
+    if (canLevelUp && age < 10) {
+        age += 1;
+        try {
+            const history = JSON.parse(safeStorage.getItem("baby_play_test_history") || "{}");
+            history[age - 1] = [];
+            safeStorage.setItem("baby_play_test_history", JSON.stringify(history));
+        } catch(e) {}
+
+        levelUpMessage = `<div class="bg-green-100 text-green-800 font-bold p-3 rounded-2xl mb-3 text-sm">🎉 शानदार! आपने लगातार अच्छा प्रदर्शन किया है, अब आप ${getClassName(age)} पर पहुँच गए हैं! 🚀</div>`;
+    } else {
+        const historyCount = getRecentTestHistory(age).length;
+        levelUpMessage = `<div class="text-xs font-bold text-blue-600 mb-3">⭐ टेस्ट पूरा हुआ! कुल टेस्ट रिकॉर्ड: ${historyCount}/10</div>`;
+    }
+
+    let starDisplay = "⭐";
+    if (score >= 80) {
+        starDisplay = "⭐⭐⭐";
+    } else if (score >= 50) {
+        starDisplay = "⭐⭐";
+    } else {
+        starDisplay = "⭐";
+    }
+
+    const content = document.getElementById("content");
+
+    content.innerHTML=`
+        <div class="kids-card w-full max-w-md p-6 text-center">
+            <div class="text-5xl mb-2">${score>=80?"🏆":"🌟"}</div>
+            <div class="text-3xl font-black text-amber-500 mb-2">${starDisplay}</div>
+            <h2 class="app-title text-3xl" style="color:#4f8cff">${score>=80?"बहुत बढ़िया!":"अच्छा प्रयास!"}</h2>
+            <div class="text-5xl font-black mt-3">${score}</div>
+            <p class="text-gray-500 text-sm mt-1 mb-3">स्कोर</p>
+            ${levelUpMessage}
+            <button onclick="soundTap(); backToMenu();" class="w-full py-3.5 rounded-2xl text-white font-black text-lg shadow-md" style="background:linear-gradient(145deg,#35c98a,#20a56a);">
+                ओके (OK) 👍
+            </button>
+        </div>
+    `;
+
+    document.getElementById("score-badge").classList.add("hidden");
+    document.getElementById("progress").innerHTML="";
+}
+
+function saveHistory(){
+    try{
+        const key="baby_play_history_v5";
+        const history=JSON.parse(safeStorage.getItem(key)||"[]");
+        history.push({age, className: getClassName(age), mode:currentMode, score, wrong:wrongAnswers, date:new Date().toLocaleString()});
+        if(history.length>20) history.shift();
+        safeStorage.setItem(key, JSON.stringify(history));
+    }catch(error){}
+}
+
+function openParentDashboard(){
+    soundTap();
+    document.getElementById("parent-screen").classList.remove("hidden");
+    renderHistory();
+}
+
+function closeParentDashboard(){
+    soundTap();
+    document.getElementById("parent-screen").classList.add("hidden");
+}
+
+function renderHistory(){
+    const container=document.getElementById("history");
+    let history=[];
+    try{
+        history=JSON.parse(safeStorage.getItem("baby_play_history_v5")||"[]");
+    }catch(error){}
+
+    if(!history.length){
+        container.innerHTML=`<div class="text-center text-gray-400 p-5 text-sm">अभी तक कोई टेस्ट पूरा नहीं हुआ है।</div>`;
+        return;
+    }
+
+    container.innerHTML=history.slice().reverse().map(item=>`
+        <div class="kids-card p-3 flex justify-between items-center text-sm">
+            <div>
+                <div class="font-black">${item.className || ('Class ' + item.age)} (${item.mode})</div>
+                <div class="text-xs text-gray-400">${item.date}</div>
+            </div>
+            <div class="font-black text-blue-500 text-base">${item.score}%</div>
+        </div>
+    `).join("");
+}
+
+function backToMenu(){
+    if("speechSynthesis" in window) speechSynthesis.cancel();
+    document.getElementById("app-screen").classList.add("hidden");
+    document.getElementById("menu-screen").classList.remove("hidden");
+    document.getElementById("menu-age-select").value = age;
+    document.getElementById("profile-text").textContent = `${getClassName(age)} Learning Adventure`;
+    buildMenu();
+    soundTap();
+}
+
+function createConfetti(x, y){
+    for(let i=0; i<18; i++){
+        const element = document.createElement("div");
+        element.className="confetti";
+        element.style.left=x+"px";
+        element.style.top=y+"px";
+        element.style.background=`hsl(${Math.random()*360},85%,60%)`;
+        document.body.appendChild(element);
+
+        const angle=Math.random()*Math.PI*2;
+        const velocity=3+Math.random()*6;
+        const vx=Math.cos(angle)*velocity;
+        const vy=Math.sin(angle)*velocity;
+        let opacity=1;
+        let cx=x;
+        let cy=y;
+
+        function animate(){
+            opacity-=.025;
+            cx+=vx;
+            cy+=vy;
+            element.style.opacity=opacity;
+            element.style.transform=`translate(${cx-x}px, ${cy-y}px)`;
+            if(opacity>0){
+                requestAnimationFrame(animate);
+            }else{
+                element.remove();
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+}
+</script>
+
+</body>
+</html>

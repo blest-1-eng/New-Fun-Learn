@@ -49,6 +49,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import android.view.View
 
 class MainActivity : ComponentActivity() {
   private var interstitialAd: InterstitialAd? = null
@@ -61,7 +62,13 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
+    window.decorView.systemUiVisibility =
+    (View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    or View.SYSTEM_UI_FLAG_FULLSCREEN
+    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
     // Initialize Google Mobile Ads SDK with child-directed settings (Google Play Families Policy compliant)
     MobileAds.initialize(this) {}
@@ -110,7 +117,7 @@ class MainActivity : ComponentActivity() {
       Column(
         modifier = Modifier
           .fillMaxSize()
-          .systemBarsPadding(),
+          
         horizontalAlignment = Alignment.CenterHorizontally
       ) {
         Box(

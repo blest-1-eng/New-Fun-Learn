@@ -453,6 +453,82 @@ button{
 .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
 .uppercase { text-transform: uppercase; }
 .leading-relaxed { line-height: 1.625; }
+
+
+/* FUN & LEARN - ANDROID PHONE SCREEN OPTIMIZATION */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+}
+
+#age-screen {
+    box-sizing: border-box;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain;
+}
+
+#age-screen > div {
+    flex-shrink: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Compact layout for shorter phone displays */
+@media screen and (max-height: 850px) {
+    #age-screen {
+        padding: 10px !important;
+    }
+
+    #age-screen > div {
+        padding: 18px !important;
+        border-radius: 28px !important;
+    }
+
+    #age-screen .text-5xl {
+        font-size: 2.5rem;
+    }
+
+    #age-screen .age-button {
+        height: 46px;
+        min-height: 46px;
+        font-size: 14px;
+    }
+
+    #age-screen .mt-4 {
+        margin-top: 10px !important;
+    }
+
+    #age-screen .mt-2 {
+        margin-top: 6px !important;
+    }
+
+    #age-screen .mb-2 {
+        margin-bottom: 6px !important;
+    }
+}
+
+/* Extra compact mode for smaller displays */
+@media screen and (max-height: 700px) {
+    #age-screen > div {
+        padding: 14px !important;
+    }
+
+    #age-screen .age-button {
+        height: 42px;
+        min-height: 42px;
+        font-size: 13px;
+    }
+
+    #age-screen .text-3xl {
+        font-size: 1.5rem;
+    }
+}
+    
 </style>
 </head>
 
